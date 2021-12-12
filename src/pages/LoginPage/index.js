@@ -64,7 +64,7 @@ export default function LoginPage() {
   }
 
   return (
-    <form onSubmit={handleSubmit(handleLogin)}>
+    <form onSubmit={handleSubmit(handleLogin)} class="container">
       <h1>Login Page</h1>
       <div className="form-group">
         <label>Tài Khoản</label>

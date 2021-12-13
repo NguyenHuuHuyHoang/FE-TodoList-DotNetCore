@@ -15,6 +15,8 @@ import AdminLayout from "./layouts/AdminLayout";
 
 // Custom Route
 import AdminRoute from "./auth/AdminRoute";
+import SignupPage from "./pages/SignupPage";
+import SignupPageNew from "./pages/SignupPageNew";
 
 // Sử dụng lazyload không import trực tiếp Page vào
 const Home = lazy(() => import("./pages/Home"));
@@ -59,6 +61,12 @@ function App() {
                 </Route>
                 <Route path="/login">
                   <LoginPage />
+                </Route>
+                <Route path="/signup">
+                  <SignupPage />
+                </Route>
+                <Route path="/signupnew">
+                  <SignupPageNew />
                 </Route>
               </Switch>
             </AppLayout>

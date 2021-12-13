@@ -1,5 +1,5 @@
 import Sidebar from "src/components/Sidebar";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import {
   Button,
@@ -13,13 +13,33 @@ import {
 export default function Home(props) {
   const [toggleModelEdit, setToggleModelEdit] = useState(false);
 
+  const [isModalUpdate, setIsModalUpdate] = useState(false);
+
   //Handle close mođal
   const handleCloseModelUpdate = () => {
     setToggleModelEdit(!toggleModelEdit);
   };
 
-  //Handle Click update
+  //Handle Click update button
   const handleClickUpdateButton = () => {
+    setToggleModelEdit(!toggleModelEdit);
+    setIsModalUpdate(true);
+  };
+
+  //Handle Click add new button
+  const handleClickAddButton = () => {
+    setToggleModelEdit(!toggleModelEdit);
+    setIsModalUpdate(false);
+  };
+
+  //Handle click add Modal button
+
+  const handleClickAddModalButton = () => {
+    setToggleModelEdit(!toggleModelEdit);
+  };
+
+  //Handle click update Modal button
+  const handleClickUpdateModalButton = () => {
     setToggleModelEdit(!toggleModelEdit);
   };
 
@@ -32,7 +52,12 @@ export default function Home(props) {
         <div className="col-10">
           <div>
             <h2 className="text-center my-3">DANH SÁCH CÁC TODO</h2>
-            <Button outline color="success" className="ml-auto d-block my-3">
+            <Button
+              outline
+              color="success"
+              className="ml-auto d-block my-3"
+              onClick={handleClickAddButton}
+            >
               Thêm Todo mới
             </Button>
           </div>
@@ -69,14 +94,14 @@ export default function Home(props) {
                   <br />
                 </td>
                 <td>
-                  <Button
-                    color="info"
-                    className="mr-2"
-                    onClick={() => setToggleModelEdit(!toggleModelEdit)}
-                  >
+                  <Button color="info" className="mr-2">
                     Thêm người
                   </Button>
-                  <Button color="primary" className="mr-2">
+                  <Button
+                    color="primary"
+                    className="mr-2"
+                    onClick={handleClickUpdateButton}
+                  >
                     Sửa
                   </Button>
                   <Button color="danger"> Xóa</Button>
@@ -122,11 +147,20 @@ export default function Home(props) {
             toggle={() => setToggleModelEdit(!toggleModelEdit)}
           >
             <ModalHeader toggle={handleCloseModelUpdate}>
-              Sửa thông tin Todo
+              {isModalUpdate ? <h3>Cập nhật Todo</h3> : <h3>Thêm mới Todo</h3>}
             </ModalHeader>
             <ModalBody></ModalBody>
             <ModalFooter>
-              <Button color="primary">Do Something</Button>
+              {isModalUpdate ? (
+                <Button color="primary" onClick={handleClickUpdateModalButton}>
+                  Cập nhật
+                </Button>
+              ) : (
+                <Button color="primary" onClick={handleClickAddModalButton}>
+                  Thêm mới
+                </Button>
+              )}
+
               <Button onClick={handleCloseModelUpdate}>Cancel</Button>
             </ModalFooter>
           </Modal>

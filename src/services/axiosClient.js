@@ -2,7 +2,7 @@ import axios from "axios";
 import qs from "qs";
 
 const axiosClient = axios.create({
-  baseURL: "https://elearning0706.cybersoft.edu.vn/api",
+  baseURL: "https://localhost:7216/api",
   // Tự cấu hình cách lấy params mặc định của axios
   // Bỏ qua giá trị null và undefined trong params
   paramsSerializer: (params) => qs.stringify(params, { skipNulls: true }),
@@ -34,10 +34,10 @@ axiosClient.interceptors.response.use(
   },
   (error) => {
     // Xử lý nếu kết quả trả về bị lỗi
-    if(error.status === 401) {
+    if (error.status === 401) {
       // Xử lý logout: clear localStorage, đẩy người dùng về trang login
     }
-    if(error.status === 500) {
+    if (error.status === 500) {
       // Xử lý thông báo cho người người server đang bị lỗi
     }
 
@@ -46,7 +46,3 @@ axiosClient.interceptors.response.use(
 );
 
 export default axiosClient;
-
-
-
-

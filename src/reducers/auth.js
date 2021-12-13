@@ -1,9 +1,4 @@
-import {
-  LOGIN_REQUEST,
-  LOGIN_SUCCESS,
-  LOGIN_FAILURE,
-  REGISTER,
-} from "../constants/auth";
+import { LOGIN, LOGOUT, REGISTER } from "../constants/auth";
 
 const userInfo = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
@@ -17,13 +12,13 @@ const initialState = {
 
 function authReducer(state = initialState, action) {
   switch (action.type) {
-    case LOGIN_REQUEST: {
+    case LOGIN.REQUEST: {
       return { ...state, isLoading: true, error: null };
     }
-    case LOGIN_SUCCESS: {
-      return { ...state, isLoading: false, userInfo: action.payload.data };
+    case LOGIN.SUCCESS: {
+      return { ...state, isLoading: false, userInfo: action.payload.data[0] };
     }
-    case LOGIN_FAILURE: {
+    case LOGIN.FAILURE: {
       return { ...state, isLoading: false, error: action.payload.error };
     }
     case REGISTER.REQUEST: {
@@ -34,6 +29,10 @@ function authReducer(state = initialState, action) {
     }
     case REGISTER.FAIL: {
       return { ...state, isLoading: false, error: action.payload.error };
+    }
+    case LOGOUT.SUCCESS: {
+      localStorage.removeItem("userInfo");
+      return { ...state, userInfo: null };
     }
     default:
       return state;

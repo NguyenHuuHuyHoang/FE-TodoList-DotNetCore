@@ -16,12 +16,9 @@ import AdminLayout from "./layouts/AdminLayout";
 // Custom Route
 import AdminRoute from "./auth/AdminRoute";
 import SignupPage from "./pages/SignupPage";
-import SignupPageNew from "./pages/SignupPageNew";
 
 // Sử dụng lazyload không import trực tiếp Page vào
 const Home = lazy(() => import("./pages/Home"));
-const Courses = lazy(() => import("./pages/Courses"));
-const Course = lazy(() => import("./pages/Course"));
 const AdminCourses = lazy(() => import("./pages/AdminCourses"));
 const AdminUsers = lazy(() => import("./pages/AdminUsers"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
@@ -53,20 +50,11 @@ function App() {
                 <Route path="/" exact>
                   <Home />
                 </Route>
-                <Route path="/courses/:category">
-                  <Courses />
-                </Route>
-                <Route path="/course/:courseId">
-                  <Course />
-                </Route>
                 <Route path="/login">
                   <LoginPage />
                 </Route>
                 <Route path="/signup">
                   <SignupPage />
-                </Route>
-                <Route path="/signupnew">
-                  <SignupPageNew />
                 </Route>
               </Switch>
             </AppLayout>

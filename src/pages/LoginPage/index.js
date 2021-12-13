@@ -15,13 +15,13 @@ import qs from "qs";
 // Khác: khi state thay đổi component bị render lại, ref thay đổi component không bị render lại
 
 // Tạo schema validation
-const schema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Email phải đúng định dạng")
-    .required("Email không được để trống"),
-  matKhau: yup.string().required("Mật khẩu không được để trống"),
-});
+// const schema = yup.object().shape({
+//   email: yup
+//     .string()
+//     .email("Email phải đúng định dạng")
+//     .required("Email không được để trống"),
+//   matKhau: yup.string().required("Mật khẩu không được để trống"),
+// });
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -33,16 +33,13 @@ export default function LoginPage() {
     formState: { errors },
     handleSubmit,
     control,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+    getValues,
+  } = useForm();
 
-  const handleLogin = (values) => {
+  const handleLogin = () => {
     // console.log(inpTaiKhoan.current.value);
     // console.log(inpMatKhau.current.value);
-    console.log(values);
-
-    dispatch(login(values));
+    dispatch(login(getValues()));
   };
 
   // userInfo có data => đã đăng nhập sẽ chuyển người dùng về trang Home
@@ -71,7 +68,7 @@ export default function LoginPage() {
         <FormGroup>
           <Label>Mật Khẩu</Label>
           <Controller
-            name="matKhau"
+            name="password"
             control={control}
             defaultValue=""
             // rules={{
@@ -84,8 +81,8 @@ export default function LoginPage() {
               return <Input {...field} />;
             }}
           />
-          {errors.matKhau && (
-            <Alert color="danger">{errors.matKhau.message}</Alert>
+          {errors.password && (
+            <Alert color="danger">{errors.password.message}</Alert>
           )}
         </FormGroup>
 

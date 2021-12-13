@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import { createGroup, fetchGroups, selectGroup } from "src/actions/group";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
   Form,
@@ -10,9 +12,26 @@ import {
   ModalFooter,
   ModalHeader,
 } from "reactstrap";
+import { Controller, useForm } from "react-hook-form";
 
 export default function Sidebar() {
+  const dispatch = useDispatch();
   const [modalAddGroup, setModalAddGroup] = useState(false);
+  const userInfo = useSelector((state) => state.auth.userInfo);
+  const groups = useSelector((state) => state.groups.groups);
+
+  const {
+    getValues,
+    control,
+    formState: { errors },
+    reset,
+  } = useForm();
+
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(fetchGroups(userInfo.id));
+    }
+  }, [userInfo]);
 
   const handleCloseModal = () => {
     setModalAddGroup(!modalAddGroup);
@@ -20,32 +39,46 @@ export default function Sidebar() {
 
   const handleClickModelAddButton = () => {
     setModalAddGroup(!modalAddGroup);
+    const formData = getValues();
+
+    dispatch(createGroup({ ...formData, accountId: userInfo.id }));
+    reset();
+  };
+
+  const handleClickGroupButton = (group) => {
+    dispatch(selectGroup(group));
+  };
+
+  const renderListGroupButton = () => {
+    return groups.map((group, index) => {
+      return (
+        <Button
+          color="primary"
+          className="w-100 mb-3"
+          data-id={group.id}
+          key={index}
+          onClick={() => handleClickGroupButton(group)}
+        >
+          {group.name}
+        </Button>
+      );
+    });
   };
   return (
     <div>
-      <Button
-        color="success"
-        outline
-        className="w-100 my-3"
-        onClick={handleCloseModal}
-      >
-        Tạo nhóm mới
-      </Button>
-      <Button color="primary" className="w-100 mb-3">
-        Big Project
-      </Button>
-      <Button color="primary" className="w-100 mb-3">
-        Big Project
-      </Button>
-      <Button color="primary" className="w-100 mb-3">
-        Big Project
-      </Button>
-      <Button color="primary" className="w-100 mb-3">
-        Big Project
-      </Button>
-      <Button color="primary" className="w-100 mb-3">
-        Big Project
-      </Button>
+      {userInfo && (
+        <>
+          <Button
+            color="success"
+            outline
+            className="w-100 my-3"
+            onClick={handleCloseModal}
+          >
+            Tạo nhóm mới
+          </Button>
+          {renderListGroupButton()}
+        </>
+      )}
 
       <Modal
         isOpen={modalAddGroup}
@@ -56,20 +89,36 @@ export default function Sidebar() {
           <Form>
             <FormGroup>
               <Label for="groupName">Tên nhóm</Label>
-              <Input
-                id="groupName"
-                name="groupName"
-                placeholder="Nhập vào tên nhóm"
-                type="text"
+              <Controller
+                name="name"
+                control={control}
+                defaultValue=""
+                // rules={{
+                //   required: {
+                //     value: true,
+                //     message: "Mật khẩu không được để trống",
+                //   },
+                // }}
+                render={({ field }) => {
+                  return <Input {...field} />;
+                }}
               />
             </FormGroup>
             <FormGroup>
               <Label for="desc">Miêu tả</Label>
-              <Input
-                id="desc"
-                name="desc"
-                placeholder="Nhập vào miêu tả về nhóm"
-                type="textarea"
+              <Controller
+                name="description"
+                control={control}
+                defaultValue=""
+                // rules={{
+                //   required: {
+                //     value: true,
+                //     message: "Mật khẩu không được để trống",
+                //   },
+                // }}
+                render={({ field }) => {
+                  return <Input {...field} />;
+                }}
               />
             </FormGroup>
           </Form>
